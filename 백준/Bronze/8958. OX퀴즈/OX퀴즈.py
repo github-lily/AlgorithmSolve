@@ -1,6 +1,9 @@
+import sys
+input = sys.stdin.readline
+
 T = int(input())
 for _ in range(T) :
-    result = input()
+    result = input().strip() 
     N = len(result)
 
     final_score = 0
@@ -10,8 +13,9 @@ for _ in range(T) :
         if mark == 'O' :
             score += 1
             final_score += score
-            
+
         else :
             score = 0
 
     print(final_score)
+
