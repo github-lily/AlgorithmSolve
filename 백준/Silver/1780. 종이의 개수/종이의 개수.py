@@ -1,49 +1,36 @@
 import sys
 input = sys.stdin.readline
 
-def check(i,j,size) :
-    num = paper[i][j]
-    for r in range(i,i+size) :
-        for c in range(j,j+size) :
-            if paper[r][c] != num :
+# 결과 저장용 변수
+count = [0, 0, 0]  # index 0: -1, index 1: 0, index 2: 1
+
+def is_same(x, y, size):
+    num = paper[x][y]
+    for i in range(x, x + size):
+        for j in range(y, y + size):
+            if paper[i][j] != num:
                 return False
     return True
 
-
-def divide(r,c,size) :
-    global minus, one, zero
-    if check(r,c,size) :
-        if paper[r][c] == 1 :
-            one += 1
-        elif paper[r][c] == 0 :
-            zero += 1
-        else :
-            minus += 1
+def divide(x, y, size):
+    if is_same(x, y, size):
+        count[paper[x][y] + 1] += 1  # -1 → 0, 0 → 1, 1 → 2
         return
-    
-    three_halves = size//3
 
-    divide(r,c,three_halves)
-    divide(r,c+three_halves,three_halves)
-    divide(r,c+(three_halves*2),three_halves)
-
-    divide(r+three_halves,c,three_halves)
-    divide(r+three_halves,c+three_halves,three_halves)
-    divide(r+three_halves,c+(three_halves*2),three_halves)
-
-    divide(r+(three_halves*2),c,three_halves)
-    divide(r+(three_halves*2),c+three_halves,three_halves)
-    divide(r+(three_halves*2),c+(three_halves*2),three_halves)
-
+    new_size = size // 3
+    for dx in range(3):
+        for dy in range(3):
+            nx = x + dx * new_size
+            ny = y + dy * new_size
+            divide(nx, ny, new_size)
 
 
 N = int(input())
-paper = [list(map(int,input().split())) for _ in range(N)]
+paper = [list(map(int, input().split())) for _ in range(N)]
 
-zero = one = minus = 0
 
-divide(0,0,N)
+divide(0, 0, N)
 
-print(minus)
-print(zero)
-print(one)
+
+for c in count:
+    print(c)
