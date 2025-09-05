@@ -12,21 +12,22 @@ team_member = N//2
 def combinations(r) :
     global N
     result = []
-    def dfs(start,path) :
+    path = [0]      # 모든 경우에서 팀은 0이 있는 팀, 없는 팀으로 나뉨! team1, team2 상관없으므로 반만 탐색!
+    def dfs(start) :
         if len(path) == r :
             result.append(path[:])
             return
         for i in range(start, N) :
             path.append(i)
-            dfs(i+1, path)
+            dfs(i+1)
             path.pop()
-    dfs(0,[])   
+    dfs(1)          # 0은 이미 들어가있으므로 1부터 시작
     return result
+
 
 # 2) 경우별 능력치 찾기
 best_dif = 1000
 for combi in combinations(team_member) :
-    min_dif = 1000
     team1 = combi
     team2 = list(set(players) - set(combi))
 
@@ -35,26 +36,19 @@ for combi in combinations(team_member) :
 
     for i in range(team_member) :
         for j in range(i+1, team_member) :
-            # team1 힘의 합 구하기(※서로서로의 능력치 더해주기)
-            team1_power += skills[team1[i]][team1[j]]
-            team1_power += skills[team1[j]][team1[i]]
-
-            team2_power += skills[team2[i]][team2[j]]
-            team2_power += skills[team2[j]][team2[i]]
+            # ※서로서로의 능력치 더해주기(양방향)
+            team1_power += skills[team1[i]][team1[j]] + skills[team1[j]][team1[i]]
+            team2_power += skills[team2[i]][team2[j]] + skills[team2[j]][team2[i]]
 
 
 # 3) 최소 차이 구하기
     dif = abs(team1_power - team2_power)
-    if min_dif > dif :
-        min_dif = dif
 
+    if best_dif > dif :
+        best_dif = dif
+        if best_dif == 0 :
+            break       # 0보다 작을 순 없음!
 
-    if best_dif > min_dif :
-        best_dif = min_dif
-    # print()
 
 print(best_dif)
-
-
-
 
