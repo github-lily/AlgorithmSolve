@@ -4,25 +4,17 @@ import sys
 input = sys.stdin.readline
 
 N = int(input())
-arr = [list(map(int,input().split())) for _ in range(N)]
 q = []
 
-flag = False
-for i in range(N) :
-    for j in range(N) :
-        # N까지 채우기
-        if flag == False :
-            if len(q) < N :
-                heapq.heappush(q,arr[i][j])
-            else :
-                flag = True
-        # 모든 원소가 찼으면
+for _ in range(N) :
+    lst = list(map(int,input().split()))
+    for i in range(N) :
+        if len(q) < N :
+            heapq.heappush(q,lst[i])
         else :
-            num = heapq.heappop(q)
-            if arr[i][j] > num :
-                heapq.heappush(q,arr[i][j])
-            else :
-                heapq.heappush(q,num)
-
+            if lst[i] > q[0] :
+                heapq.heapreplace(q,lst[i])
+    
 print(q[0])
+
             
