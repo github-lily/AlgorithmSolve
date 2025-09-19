@@ -1,16 +1,17 @@
-import sys
+N = int(input())
+pattern = input().strip()
 
-input = sys.stdin.readline
+idx = pattern.find("*")
+start_pattern = pattern[:idx]
+end_pattern = pattern[idx+1:]
+e = len(end_pattern)
 
-n = int(input().strip())
-pat = input().strip()
-pre, suf = pat.split('*', 1)
 
-for _ in range(n):
-    s = input().strip()
-    if len(s) < len(pre) + len(suf):
+for _ in range(N) :
+    text = input().strip()
+    if len(text) < len(pattern)-1 :
         print("NE")
-    elif s.startswith(pre) and s.endswith(suf):
+    elif text[:idx] == start_pattern and text[-len(end_pattern):] == end_pattern :
         print("DA")
-    else:
-        print("NE")
+    else :
+        print("NE") 
