@@ -1,49 +1,31 @@
-import heapq as hq
-
-        
-def dijkstra(start,graph,n) :
-    dis = [int(1e9)] * (n+1)
-    q = []    
-    dis[start] = 0
-    hq.heappush(q,(0,start))
-    
-    # 다익스트라
-    while q :
-        cw, cv = hq.heappop(q)
-        if dis[cv] < cw : continue
-        
-        for nv,nw in graph[cv] :
-            new_w = cw+nw
-            if dis[nv] > new_w :
-                dis[nv] = new_w
-                hq.heappush(q,(new_w,nv))
-                
-    return dis
-    
 
     
 def solution(n, s, a, b, fares):
     
-    graph = [[] for _ in range(n+1)]
+    graph = [[int(1e9)] *n for _ in range(n)]
+
 
     
     for i,j,f in fares :
-        graph[i].append((j,f))
-        graph[j].append((i,f))
+        graph[i-1][j-1] = f
+        graph[j-1][i-1] = f
     
+    # 값 초기화
+    for i in range(n) :
+        graph[i][i] = 0
     
-    s_dis = dijkstra(s,graph,n)   
-    a_dis = dijkstra(a,graph,n)
-    b_dis = dijkstra(b,graph,n)
-
+    for k in range(n) :
+        for r in range(n) :
+            for c in range(n) :
+                if graph[r][c] > graph[r][k] + graph[k][c] :
+                    graph[r][c] = graph[r][k] + graph[k][c]
     
-    mn = int(1e9)
-    for k in range(1,n+1) :
-        fare = s_dis[k] + a_dis[k] + b_dis[k]       # s -> k -> a/b  (s == k 일때가 각각 갈때 요금)
-        if mn > fare :
-            mn = fare
-            
+    mn = int(1e9)          
+    for i in range(n) :
+        mn = min(mn, graph[s-1][i] + graph[i][a-1] + graph[i][b-1])
+    
     return mn
+                
     
     
     
