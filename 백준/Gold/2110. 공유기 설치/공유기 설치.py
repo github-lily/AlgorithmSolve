@@ -1,4 +1,3 @@
-
 import sys
 input = sys.stdin.readline
 
@@ -6,11 +5,6 @@ n, c = map(int,input().split())
 houses = []
 for _ in range(n) :
     houses.append(int(input()))
-
-if n == 2 :
-    ans = max(houses) - min(houses)
-    print(ans)
-    exit()
 
 houses.sort()
 
@@ -29,9 +23,6 @@ while start <= end :
             cnt += 1
             cur = houses[i]
         
-        # 가지치기. 공유기 개수 이상이면 gap 여유있단거니까 중단
-        if cnt > c :
-            break
 
     # 공유기 개수가 여유있다는 건 간격이 더 넓어도 된단 뜻        
     if cnt >= c :           
@@ -43,3 +34,5 @@ while start <= end :
 
 print(mx)
             
+
+
