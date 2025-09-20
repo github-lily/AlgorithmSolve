@@ -1,31 +1,36 @@
+from collections import Counter
+
 N,K = map(int,input().split())
-trees = list(map(int,input().split()))
+trees = Counter(map(int,input().split()))
 
-mx = 0
+def solution(k,trees) :
+    
+    lo = 0
+    hi = max(trees)
+    mx = 0
+    
+    while lo+1 < hi :
+        mid = (lo + hi)//2
+        amount = cutting(trees,mid)
 
-def cutting(h) :
+        if amount >= k :
+            lo = mid
+            if mx < mid :
+                mx = mid
+        
+        else :
+            hi = mid
+    
+    return mx
+
+
+def cutting(trees,h) :
     amount = 0
-    for t in trees :
-        amount += max(0,t-h)
+    for t,n in trees.items() :
+        if t>h :
+            amount += (t-h)*n
     return amount
 
 
-def binary(s,e) :
-    global mx
-
-    if s > e :
-        return
-    
-    mid = (s+e)//2
-    amount = cutting(mid)
-    if amount >= K :
-        if mx < mid :
-            mx = mid
-        return binary(mid+1,e)
-    else :
-        binary(s,mid-1)
-
-
-binary(0,max(trees))
-
+mx = solution(K,trees)
 print(mx)
