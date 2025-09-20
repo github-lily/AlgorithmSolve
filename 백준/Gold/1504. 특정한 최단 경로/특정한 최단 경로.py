@@ -1,58 +1,53 @@
+import sys
+input = sys.stdin.readline
 
-import heapq
+import heapq as hq
 
 
-INF = int(1e9)
-N,E = map(int,input().split())
-connect = [[] for _ in range(N+1)]      # 정점번호 1부터 시작
+def dijkstra(graph,start) :
+    dis = [1e9] * (N+1)
+
+    q = []
+    hq.heappush(q,(0,start))
+    dis[start] = 0
+
+
+    while q :
+        cw,cv = hq.heappop(q)
+
+        if dis[cv] < cw :
+            continue
+
+        for nv,nw in graph[cv] :
+            next = cw + nw
+            if dis[nv] > next :
+                dis[nv] = next
+                hq.heappush(q,(next,nv))
+
+    return dis
+
+N,E = list(map(int,input().split()))
+graph = [[] for _ in range(N+1)]
 
 
 for _ in range(E) :
-    a,b,c = map(int,input().split())
-    connect[a].append((b,c))
-    connect[b].append((a,c))
-    
+    a,b,c = list(map(int,input().split()))
+    graph[a].append((b,c))
+    graph[b].append((a,c))
 
-# 방문해야하는 포인트
-p1,p2 = map(int,input().split())
+# 거쳐야 할 정점
+v1,v2 = list(map(int,input().split()))
 
+s_dis = dijkstra(graph,1)
+v1_dis = dijkstra(graph,v1)
+v2_dis = dijkstra(graph,v2)
 
-# 시작점부터 각 노드까지의 최단경로 함수
-def dikjstra(start) :
-    distance = [INF]*(N+1)                      # 시작점부터 각 노드까지의 최단경로 리스트
+ver1 = s_dis[v1] + v1_dis[v2] + v2_dis[N]
+ver2 = s_dis[v2] + v2_dis[v1] + v1_dis[N]
 
-    q = []
-    heapq.heappush(q,(0,start))           # 시작지점은 거리 0
-    distance[start] = 0
-
-    while q :
-        now_distance, node = heapq.heappop(q)
-
-
-        if distance[node] < now_distance :
-            continue
-
-        for next, next_distance in connect[node] :
-            total_distance = next_distance + now_distance
-            if distance[next] > total_distance :
-                distance[next] = total_distance
-                heapq.heappush(q,(total_distance,next))
-
-    return distance
-
-
-from_start = dikjstra(1)
-from_p1 = dikjstra(p1)
-from_p2 = dikjstra(p2)
-
-# 최단 경로는 1 -> p1 -> p2 -> N 또는 1-> p2 -> p1 -> N 둘 중 하나
-route1 = from_start[p1] + from_p1[p2] + from_p2[N]
-route2 = from_start[p2] + from_p2[p1] + from_p1[N]
-
-
-ans = min(route1, route2)
-
-if ans >= INF :
+if ver1 >= 1e9 and ver2 >= 1e9 :
     ans = -1
-    
+else :
+    ans = min(ver1,ver2)
+
 print(ans)
