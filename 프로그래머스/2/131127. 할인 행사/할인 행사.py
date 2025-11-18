@@ -18,7 +18,7 @@ def solution(want, number, discount):
 
     # 개수에 맞게 일단 차감
     for i in range(N) :
-        if discount[i] in want :
+        if discount[i] in want_dict :
             want_dict[discount[i]] -= 1
     
     # 구매가능한 날인지 확인
@@ -29,9 +29,9 @@ def solution(want, number, discount):
     
     # N일 이후 되는날 찾기
     while idx < len(discount) :
-        if discount[idx-N] in want :
+        if discount[idx-N] in want_dict :
             want_dict[discount[idx-N]] += 1 
-        if discount[idx] in want :
+        if discount[idx] in want_dict :
             want_dict[discount[idx]] -= 1
         
         if check(want_dict) :
