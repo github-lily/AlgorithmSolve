@@ -1,5 +1,4 @@
 def solution(money):
     if money >= 5500 :
-        coffee = money // 5500
-        return [coffee, money - (5500 * coffee)]
+        return [money // 5500, money % 5500]
     return [0,money]
