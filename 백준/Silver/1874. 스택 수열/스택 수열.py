@@ -2,45 +2,36 @@ import sys
 input = sys.stdin.readline
 
 n = int(input())
-lst = list(int(input()) for _ in range(n))
+target = list(int(input()) for _ in range(n))
 
+i = 0   # target
+num = 1 # 1~n (오름차순)
 
+stack = []
+out = []
 
-def check():
-    stack = []
-    ans = []
-    i = 0
+ok = True   # flag
 
-    for num in range(1,n+1) :
-        # stack에 추가
+while i < n and ok :
+    t = target[i]
+    
+    # target number까지 숫자 push
+    while num <= t :
         stack.append(num)
-        ans.append('+')
+        out.append('+')
+        num += 1
 
-        # 수열과 비교 
-        while i < n :
-            if stack :
-                if lst[i] == stack[-1] :
-                    stack.pop()
-                    i += 1
-                    ans.append('-')
-                elif lst[i] < stack[-1] :
-                    return False
-                else :
-                    break
-            else :
-                break
-    
-    if not stack :
-        return ans
-    
-    return False
+    # t와 일치하면 pop
+    if stack and stack[-1] == t :
+        stack.pop()
+        out.append('-')
+        i += 1
+    # 일치하지 않으면 즉시 중단 (불일치 == t < stack[-1] : 더 큰 수로 덮여 못나옴)
+    else :
+        ok = False
 
-
-result = check()
-
-if not result :
-    print("NO")
+if ok :
+    print("\n".join(out))
 else :
-    print("\n".join(result))
-
-
+    print("NO")
+    
