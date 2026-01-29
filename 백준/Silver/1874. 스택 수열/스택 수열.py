@@ -2,30 +2,45 @@ import sys
 input = sys.stdin.readline
 
 n = int(input())
-lst = [int(input()) for _ in range(n)]
+lst = list(int(input()) for _ in range(n))
 
-stack = []
-num = 1
-i = 0
-result = []
 
-while i < n:
-    target = lst[i]
 
-    # target이 나올 때까지 push
-    while num <= target:
+def check():
+    stack = []
+    ans = []
+    i = 0
+
+    for num in range(1,n+1) :
+        # stack에 추가
         stack.append(num)
-        result.append('+')
-        num += 1
+        ans.append('+')
 
-    # 맨 위가 target이면 pop
-    if stack[-1] == target:
-        stack.pop()
-        result.append('-')
-        i += 1
-    else:
-        print("NO")
-        sys.exit()
-        
-for r in result:
-    print(r)
+        # 수열과 비교 
+        while i < n :
+            if stack :
+                if lst[i] == stack[-1] :
+                    stack.pop()
+                    i += 1
+                    ans.append('-')
+                elif lst[i] < stack[-1] :
+                    return False
+                else :
+                    break
+            else :
+                break
+    
+    if not stack :
+        return ans
+    
+    return False
+
+
+result = check()
+
+if not result :
+    print("NO")
+else :
+    print("\n".join(result))
+
+
