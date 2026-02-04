@@ -1,7 +1,7 @@
-word = input()
-count = [0] * 26
+text = input()
+cnt = [0] * 26
 
-for ch in word:
-    count[ord(ch) - ord('a')] += 1
+for char in text :
+    cnt[ord(char) - ord('a')] += 1
 
-print(' '.join(map(str, count)))
+print(*cnt)
