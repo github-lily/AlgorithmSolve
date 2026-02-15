@@ -11,9 +11,9 @@ class Solution {
                 if (k < arr[j] && arr[j] < mn) {
                     mn = arr[j];
                 }
+            }
             int temp = (mn == 9999999) ? -1 : mn ;
             ans[i] = temp;
-            }
         } return ans;
     }
 }
