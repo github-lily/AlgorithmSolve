@@ -5,32 +5,16 @@ class Solution {
         // 동적 배열 생성
         List<Integer> ans = new ArrayList<>();
         
-        for (int i = l; i <= r; i++) {
-            String str = String.valueOf(i);
+        for (int i = 0; i < 64 ; i++) {
+            int num = Integer.parseInt(Integer.toBinaryString(i)) * 5;
             
-            // 5, 0인지 확인
-            boolean ok = true;
-            for (int j=0; j < str.length(); j++) {
-                if (str.charAt(j) != '5' && str.charAt(j) != '0') {
-                    ok = false;
-                    break;
-                } 
-            }
-            if (ok) {
-                ans.add(i);
+            if (l <= num && num <= r) {
+                ans.add(num);
+            } else if (num > r) {
+                break;
             }
         }
         
-        if (ans.size() == 0) {
-            int[] result = new int[]{-1};
-            return result;
-        }
-        
-        // 형변환
-        int[] result = new int[ans.size()];
-        for (int idx = 0; idx < ans.size(); idx++) {
-            result[idx] = ans.get(idx);
-        }    
-        return result;
+        return ans.isEmpty() ? new int[]{-1} : ans.stream().mapToInt(i -> i).toArray();
     }
 }
