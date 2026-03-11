@@ -1,33 +1,15 @@
 class Solution {
-    int ans = 0;
-    int[] arr;
-    int N;
-    int t;
-    
     public int solution(int[] numbers, int target) {
-       
-        arr = numbers;
-        N = numbers.length;
-        t = target;
-                    
-        powerset(0,0);
-        
-        return ans;
+        return dfs(numbers, target, 0, 0);
     }
     
-    public void powerset(int idx, int sum) {
+    public int dfs(int[] arr, int t, int idx, int sum) {
         // 기저 조건
-        if (idx >= N) {
-            if (sum == t) {
-                ans += 1;
-            }
-            return;
+        if (idx >= arr.length) {
+            return (sum == t) ? 1 : 0;
         }
         
-        
-        // 재귀 조건
-        powerset(idx+1, sum+arr[idx]);
-        powerset(idx+1, sum-arr[idx]);
-        
+        // 재귀
+        return dfs(arr, t, idx+1, sum+arr[idx]) + dfs(arr,t,idx+1,sum-arr[idx]);
     }
 }
