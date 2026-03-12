@@ -1,37 +1,30 @@
 class Solution {
-    String[] alphabet = {"A", "E", "I", "O", "U"}; 
-    int cnt = 0; 
-    int answer = 0; 
-    boolean found = false; 
+    String alphabet = "AEIOU";
+    int N = alphabet.length();
     String target;
-
-    public int solution(String word) {
-        target = word;
-        dfs("");
-        return answer; 
-    }
-
+    int cnt = 0;
+    boolean found = false;
+    
     public void dfs(String w) {
-        if (found) return; 
-
-        // 현재 문자열이 빈 문자열이 아닐 때만 카운트
-        if (!w.equals("")) {
-            cnt++;
-        }
-
-        // 찾으면 answer 저장 후 종료
+        if (found) return;
         if (w.equals(target)) {
-            answer = cnt;
             found = true;
             return;
         }
-
-        // 기저조건
-        if (w.length() == 5) return;
-
-        // 재귀 부분
-        for (int i = 0; i < 5; i++) {
-            dfs(w + alphabet[i]);
+        if (w.length() == N) return;
+        
+        for (int i = 0; i < N; i++) {
+            cnt += 1;
+            dfs(w+alphabet.charAt(i));
+            
+            if (found) return;
         }
+    }
+    
+    
+    public int solution(String word) {
+        target = word;
+        dfs("");
+        return cnt;
     }
 }
