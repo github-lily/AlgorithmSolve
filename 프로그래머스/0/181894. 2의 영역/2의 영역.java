@@ -1,35 +1,39 @@
 class Solution {
     public int[] solution(int[] arr) {
-        int start = -1;
-        int end = -1;
-
-        // 첫 번째 2 찾기
-        for (int i = 0; i < arr.length; i++) {
+        
+        int N = arr.length;
+        int start = 0;
+        int end = 0;
+        boolean exist = false;
+        
+        // 시작점 찾기
+        for (int i = 0; i < N; i++) {
             if (arr[i] == 2) {
                 start = i;
+                exist = true;
                 break;
             }
         }
-
-        // 마지막 2 찾기
-        for (int i = arr.length - 1; i >= 0; i--) {
-            if (arr[i] == 2) {
-                end = i;
-                break;
+        
+        // 2가 있을 때만 끝점 찾기
+        if (exist) {
+            for (int j = N-1; j >= start; j--) {
+                if (arr[j] == 2) {
+                    end = j;
+                    break;
+                }
+            } 
+            
+            // 구간 추출
+            int[] result = new int[end - start + 1];
+            for (int s = start; s <= end; s++) {
+                result[s-start] = arr[s];
             }
+            return result;
         }
-
-        // 2가 없는 경우
-        if (start == -1) {
-            return new int[]{-1};
-        }
-
-        // 구간 추출
-        int[] result = new int[end - start + 1];
-        for (int i = start; i <= end; i++) {
-            result[i - start] = arr[i];
-        }
-
-        return result;
+        
+        // 없으면 -1 반환
+        
+        return new int[]{-1};
     }
 }
