@@ -1,32 +1,42 @@
-
 import sys
 input = sys.stdin.readline
 
+import heapq
+
+
+def dijkstra(start) :
+    q = []
+    heapq.heappush(q,(0,start))
+    dp[0] = 0
+
+    while q :
+        w, cur = heapq.heappop(q)
+
+        if dp[cur] < w :
+            continue
+
+        for next, nw in graph[cur] :
+            cost = w + nw
+            if dp[next] > cost :
+                dp[next] = cost
+                heapq.heappush(q,(cost,next))
+
+
+
 N, D = map(int,input().split())
-dp = [x for x in range(D+1)]        # 해당 index까지의 최단거리 기록
+graph = [[] for _ in range(D+1)]
+INF = 1e9
+dp = [INF] * (D+1)
 
-shortcuts = []
+# 지름길 저장
 for _ in range(N) :
-    s,e,l = map(int,input().split())
-    # 도착점이 끝점보다 멀거나, 길이가 원래 이동거리보다 먼 경우 제외
-    if e <= D and e-s > l :
-        shortcuts.append([s,e,l])
-shortcuts.sort()
+    s,e,v = map(int,input().split())
+    if e <= D :
+        graph[s].append((e,v))
 
-s_idx = 0
+# 원래 경로 저장
+for i in range(D) :
+    graph[i].append((i+1,1))
 
-for i in range(D+1) :
-    # i를 1부터 시작하면 지름길 시작이 0인경우 체크가 안됨
-    if i != 0 :
-        if dp[i] > dp[i-1] + 1 :
-            dp[i] = dp[i-1] + 1
-
-    # 지름길 체크(같은 시작점이 여러개일 수 있으므로 계속 체크)
-    while s_idx < len(shortcuts) and shortcuts[s_idx][0] == i :
-        start,end,length = shortcuts[s_idx]
-        if end <= D : 
-            if dp[end] > dp[i] + length :
-                dp[end] = dp[i] + length
-        s_idx += 1
-
+dijkstra(0)
 print(dp[D])
