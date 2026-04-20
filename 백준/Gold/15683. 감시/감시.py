@@ -7,40 +7,43 @@
 # 최대 감시! = 최소 사각지대!
 from copy import deepcopy
 
-def watch(tmp,i,j,d) :
-    ni,nj = i,j
+def watch(i,j,d,tmp) :
+    ni, nj = i,j
     while True :
         ni += di[d]
         nj += dj[d]
-        if not (0 <= ni < n and 0 <= nj < m) :      # 범위 밖
+        if not (0 <= ni < n and 0 <= nj < m) :
             break
-        if tmp[ni][nj] == 6 :       # 벽
+        if tmp[ni][nj] == 6 :
             break
         if tmp[ni][nj] == 0 :
-            tmp[ni][nj] = -1        # 감시 체크
+            tmp[ni][nj] = -1
 
 
-def dfs(cam_order,arr) :
+def dfs(cctv_now, arr) :
     global ans
-    if cam_order == len(cctv) :
+    if cctv_now == len(cctv) :      # cctv 모두 확인하면 종료
         cnt = 0
-        for i in range(n) :
-            for j in range(m) :
-                if arr[i][j] == 0 :
+        for r in range(n) :
+            for c in range(m) :
+                if arr[r][c] == 0 :
                     cnt += 1
+        
         if ans > cnt :
             ans = cnt
-        return
-    
-    i,j,cam_type = cctv[cam_order]
+        
+        return ans
 
-    for case in dirs[cam_type] :
+    r,c,cctv_type = cctv[cctv_now]
+
+    for case in cctv_dir[cctv_type] :
         tmp = deepcopy(arr)
 
         for d in case :
-            watch(tmp,i,j,d)
+            watch(r,c,d,tmp)
+
+        dfs(cctv_now + 1, tmp)
         
-        dfs(cam_order+1, tmp)
 
 
 n,m = map(int,input().split())
@@ -49,8 +52,8 @@ arr = [list(map(int,input().split())) for _ in range(n)]
 cctv = []
 ans = int(1e9)
 
-di,dj = [0,1,0,-1],[1,0,-1,0]
-dirs = [
+di, dj = [0,1,0,-1], [1,0,-1,0]
+cctv_dir = [
     [],
     [[0],[1],[2],[3]],
     [[0,2],[1,3]],
@@ -59,14 +62,13 @@ dirs = [
     [[0,1,2,3]]
 ]
 
-
 for i in range(n) :
     for j in range(m) :
-        if arr[i][j] != 0 and arr[i][j] != 6 :
+        if 1 <= arr[i][j] <= 5 :
             cctv.append((i,j,arr[i][j]))
+
 
 dfs(0,arr)
 
 print(ans)
-
 
