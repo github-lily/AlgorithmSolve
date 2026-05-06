@@ -1,9 +1,10 @@
-from collections import deque
 def solution(arr):
-    q = [arr[0]]
+    stack = []
+    stack.append(arr[0])
+    top = 0
     for i in range(1,len(arr)) :
-        if arr[i-1] != arr[i] :
-            q.append(arr[i])
+        if stack[top] != arr[i] :
+            stack.append(arr[i])
+            top += 1
     
-    return q
-    
+    return stack
