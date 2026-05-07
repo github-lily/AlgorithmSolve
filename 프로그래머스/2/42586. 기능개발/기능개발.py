@@ -1,32 +1,26 @@
 def solution(progresses, speeds):
     ans = []
-    N = len(progresses)
+    n = len(progresses)
+    needs = []
     
     # 필요 일수 구하기
-    needs = []      # stack
-    for i in range(N-1, -1, -1) :       # 뒤에서부터 넣기
-        need = (100 - progresses[i]) // speeds[i]
-        if (100 - progresses[i]) % speeds[i] != 0 :
-            need += 1
+    for progress, speed in zip(progresses, speeds) :
+        remain = 100 - progress
+        need = (remain + speed - 1) // speed        # 올림 나눗셈
         needs.append(need)
+        
+    days = needs[0]
+    cnt = 0
     
-    # 개발 완료된 것끼리 묶기
-    top = N-1
-    days = needs[top]
-    cnt = 1
-    top -= 1
-    
-    while top > -1 :
-        if needs[top] <= days :
+    # 묶기
+    for need in needs :
+        if days >= need :
             cnt += 1
-            top -= 1
         else :
-            if cnt != 0 :           # 값 저장
-                ans.append(cnt)
-                cnt = 0
-            days += 1
-    
-    ans.append(cnt)
+            ans.append(cnt)
+            days = need
+            cnt = 1
+            
+    ans.append(cnt)     # 맨 뒤에거 넣어주기
     
     return ans
-        
