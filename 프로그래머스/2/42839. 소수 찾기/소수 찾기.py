@@ -1,60 +1,43 @@
 def solution(numbers):
-    # 만들 수 있는 수 모두 구하기
-    numbers = sorted(map(int,numbers))
-    primes = set()
+    cnt = 0
+    nums = set()
     N = len(numbers)
-    v = [0]*N
-    ans = 0
-    
-    def is_prime(num) :
-        if num < 2 :
-            return False
+    v = [False] * N
+          
         
-        if num % 2 == 0 :
-            if num == 2 :
-                return True
-            return False
-        
-        
-        i = 3
-        while i*i <= num :
-            if num % i == 0 :
-                return False
-            i += 2 
-        
-        return True
-    
-
-    def dfs(n, new_num) :
-        nonlocal N
-        
-        if n == N :
-            return
+    def make_num(num) :
+        if num :
+            nums.add(int(num))
         
         for i in range(N) :
-            if v[i] == 1 :
+            if v[i] :
                 continue
             
-            # 중복된 숫자 거르는 부분
-            # [1,1,7] 일 때, 앞에 1이 안쓰였으면 뒤의 1도 안씀
-            # 사용할 경우 [1,7](첫번째 1사용) , [1,7] (두번째 1 사용) 중복된 값이 나올 수 있음.
-            if i > 0 and numbers[i] == numbers[i-1] and v[i-1] == 0 :
-                continue
-                
-            v[i] = 1
-            next_num = new_num*10 + numbers[i]
+            v[i] = True
+            make_num(num + numbers[i])
+            v[i] = False
             
-            if is_prime(next_num) :
-                primes.add(next_num)
-                
-            
-            dfs(n+1,next_num)
-            v[i] = 0
-                
-            
-    dfs(0,0)
-    ans = len(primes)
-    return ans
-
     
+    make_num("")
     
+    for num in nums :
+        if check_prime(num) :
+            cnt += 1
+    
+    return cnt
+        
+    
+def check_prime(num) :
+    if num < 2 :
+        return False
+    if num % 2 == 0 :
+        if num == 2 :
+            return True
+        return False
+    
+    # 121 = 11*11 같은 경우 고려 제곱근 나누기
+    for i in range(3, int(num**0.5) + 1,2) :       
+        if num % i == 0 :
+            return False
+    
+    return True
