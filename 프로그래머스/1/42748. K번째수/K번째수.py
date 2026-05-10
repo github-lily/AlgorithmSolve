@@ -1,7 +1,8 @@
-def solution(array, commands):
-    answer = []
+def solution(arr, commands):
+    ans = []
     for i,j,k in commands :
-        array1 = sorted(array[i-1:j])
-        answer.append(array1[k-1])
+        temp = sorted(arr[i-1:j])
+        ans.append(temp[k-1])
     
-    return answer
+    return ans
+        
