@@ -1,18 +1,16 @@
-from collections import deque
-
-def solution(priorities, location):
-    qu = deque()
+def solution(arr, target):
+    order = 0
+    orders = sorted(arr, reverse=True)
+    cur = 0
     
-    for i,p in enumerate(priorities) :
-        qu.append((p,i))
-        
-    ans = 0
+    while True :
+        for i, val in enumerate(arr) :
+            if val == orders[cur] :
+                cur += 1
+                order += 1
+                if i == target :
+                    return order
 
-    while qu:
-        cur = qu.popleft()
-        if any(cur[0] < q[0] for q in qu):
-            qu.append(cur)
-        else:
-            ans += 1
-            if cur[1] == location:
-                return ans
+    return order
+    
+    
