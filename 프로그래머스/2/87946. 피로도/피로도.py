@@ -1,21 +1,22 @@
-def solution(k, dungeons):
-    answer = 0
-    n = len(dungeons)
-    visited = [False] * n
-
-    def dfs(cur_k, cnt):
-        nonlocal answer
-        if cnt > answer:
-            answer = cnt
-
-        for i in range(n):
-            if visited[i]:
+def solution(k, dun):
+    n = len(dun)
+    v = [False] * n
+    mx = 0
+    
+    def dfs(energy,cnt) :
+        nonlocal mx
+        
+        if mx < cnt :
+            mx = cnt
+        
+        for i in range(n) :
+            if v[i] :
                 continue
-            need, cost = dungeons[i]
-            if cur_k >= need:
-                visited[i] = True
-                dfs(cur_k - cost, cnt + 1)
-                visited[i] = False
-
-    dfs(k, 0)
-    return answer
+            need, cost = dun[i][0], dun[i][1]
+            if energy >= need :
+                v[i] = True
+                dfs(energy - cost, cnt + 1)
+                v[i] = False
+    
+    dfs(k,0)
+    return mx
