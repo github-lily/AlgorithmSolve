@@ -1,29 +1,35 @@
+'''
+트럭은 1초부터 올라간다
+트럭은 1초에 다리 길이 1씩 전진한다.
+트럭은 올라갈수 있으면 1초에 한 대씩 다리에 올라갈 수 있다
+'''
 from collections import deque
 
-def solution(bl, w, tw):
-    q = deque([0] * bl)     # 다리 위 
-    tw = deque(tw)
-    
-    time = 0
-    cw = 0
-    
-    while tw :
-        time += 1
-        cw -= q.popleft()
+def solution(L, W, trucks):
+    can = W             # 가능 무게
+    wq = deque(trucks)  # 대기 큐
+    pq = deque()        # 진행 큐
+    time = 0               # 현재 시간
 
-        # 무게기준을 넘지 않으면, 대기 트럭에서는 제거, 다리 위와 현재 무게에 추가
-        if cw + tw[0] <= w :
-            cw += tw[0]
-            q.append(tw.popleft())
-        
-        # 무게 기준을 넘는다면 0 추가해서 한 칸 이동
-        else :
-            q.append(0)
-        
-    # tw가 비는 순간 = 마지막 트럭이 올라간 순간이므로, 마지막트럭이 이동할 시간만큼 추가
-    time += bl
     
+    while wq or pq:
+        time += 1
+        
+        # 트럭 내리기
+        if pq and (time - pq[0][1]) >= L :
+            pw, pt = pq.popleft()
+            time += L - (time - pt)
+            can += pw
+            
+        # 새 트럭 올리기
+        if wq and can >= wq[0] :
+            c = wq.popleft()
+            pq.append((c,time))
+            can -= c
+
     return time
+            
     
         
-        
+    
+    
