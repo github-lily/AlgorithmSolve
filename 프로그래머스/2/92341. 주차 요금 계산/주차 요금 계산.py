@@ -28,7 +28,7 @@ def solution(fees, records):
     
     for record in records :
         time, num, rec = record.split()
-        if not cars.get(num) :
+        if num not in cars :
             cars[num] = []
         cars[num].append(time)
     
