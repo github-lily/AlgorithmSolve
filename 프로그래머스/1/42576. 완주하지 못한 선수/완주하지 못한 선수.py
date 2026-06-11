@@ -1,9 +1,13 @@
-def solution(part, comp):
-    part.sort()
-    comp.sort()
+def solution(participant, completion):
+    players = {}
     
-    for i in range(len(comp)) :
-        if part[i] != comp[i] :
-            return part[i]
-    return part[-1]
+    for part in participant :
+        players[part] = players.get(part,0) + 1
+    
+    for com in completion :
+        players[com] -= 1
+    
+    for name, cnt in players.items() :
+        if cnt > 0 :
+            return name
         
