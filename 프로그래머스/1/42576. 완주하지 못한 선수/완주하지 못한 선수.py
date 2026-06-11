@@ -1,21 +1,9 @@
-from collections import defaultdict
-
-def solution(participant, completion):
-    answer = ''
+def solution(part, comp):
+    part.sort()
+    comp.sort()
     
-    p_dict = defaultdict(int)
-    
-    for p in participant :
-        p_dict[p] += 1
+    for i in range(len(comp)) :
+        if part[i] != comp[i] :
+            return part[i]
+    return part[-1]
         
-    for c in completion :
-        p_dict[c] -= 1
-    
-
-    for k,v in p_dict.items() :
-        if v != 0 :
-            answer += k
-    
-
-    
-    return answer
