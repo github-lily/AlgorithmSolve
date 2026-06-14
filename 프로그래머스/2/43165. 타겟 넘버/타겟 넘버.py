@@ -1,22 +1,18 @@
-
-
-        
-
 def solution(numbers, target):
-    N = len(numbers)
+    cnt = 0
+    n = len(numbers)
     
-    def dfs(n, v, cnt) :
-        if n == N :
-            if v == target :
+    def dfs(num, i) :
+        nonlocal cnt, target
+        # 종료 조건
+        if i == n :
+            if num == target :
                 cnt += 1
-            return cnt
-
-        cnt = dfs(n+1, v-numbers[n], cnt)
-        cnt = dfs(n+1, v+numbers[n], cnt)
+            return
         
-        return cnt
+        dfs(num+numbers[i], i+1)
+        dfs(num-numbers[i], i+1)
     
-    answer = dfs(0,0,0)
+    dfs(0, 0)
     
-    
-    return answer
+    return cnt
