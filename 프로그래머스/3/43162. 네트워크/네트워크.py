@@ -1,23 +1,40 @@
-def solution(n, computers):
-    v = [0] * n
-    cnt = 0
-    
-    def dfs(idx) :
-        nonlocal v
-        
-        v[idx] = 1
-                
-        for j in range(n) :
-            if v[j] == 0 and computers[idx][j] == 1 :       # 방문안한 인접 정점
-                dfs(j)
+from collections import deque
 
+def solution(n, computers):
+    cnt = 0
+    graph = [[] for _ in range(n)]
     
-    
+    # 간선 정보 저장
     for i in range(n) :
-        if v[i] == 0 :
-            dfs(i)
-            cnt += 1
-            
+        for j in range(n) :
+            # 양방향 연결
+            if i != j and computers[i][j] == 1 :
+                graph[i].append(j)
     
+    
+    def bfs(start) :
+        nonlocal visit
+        q = deque([start])
+        visit[start] = True
+        
+        while q :
+            cur = q.popleft()
+            
+            for nxt in graph[cur] :
+                if not visit[nxt] :
+                    visit[nxt] = True
+                    q.append(nxt)
+        
+        
+    visit = [False] * n
+    
+
+    for i in range(n) :
+        if not visit[i] :
+            cnt += 1
+            bfs(i)
     
     return cnt
+    
+    
+    
