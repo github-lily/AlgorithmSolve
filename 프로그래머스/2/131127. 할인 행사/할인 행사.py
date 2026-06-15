@@ -1,42 +1,63 @@
-def check(dic) :  
-    vals = dic.values()
-    if all( 1 > val for val in vals) :
-        return True
-    return False
-        
-        
 def solution(want, number, discount):
-    N = sum(number)
+    # 가지치기 : 원하는게 할인 안하면 종료
+    if len(set(want) - set(discount)) > 0 :
+        return 0
     
-    want_dict = dict()
     ans = 0
     
-    # 딕셔너리에 저장
-    for idx in range(len(number)) :
-        want_dict[want[idx]] = number[idx]
-
-
-    # 개수에 맞게 일단 차감
-    for i in range(N) :
-        if discount[i] in want_dict :
-            want_dict[discount[i]] -= 1
+    # want 저장
+    needs = {}
+    N = sum(number)
+    for i in range(len(number)) :
+        needs[want[i]] = needs.get(want[i], number[i])
     
-    # 구매가능한 날인지 확인
-    if check(want_dict) :
+    def check(dic) :
+        vals = dic.values()
+        for val in vals :
+            if val > 0 :
+                return False
+        return True
+    
+    
+    # 필요한 구매 물품 개수만큼 할인 품목 저장
+    for idx in range(N) :
+        prod = discount[idx]
+        if prod in needs :
+            needs[prod] -= 1
+    
+    # 확인
+    if check(needs) :
         ans += 1
-    
-    idx = N
-    
-    # N일 이후 되는날 찾기
-    while idx < len(discount) :
-        if discount[idx-N] in want_dict :
-            want_dict[discount[idx-N]] += 1 
-        if discount[idx] in want_dict :
-            want_dict[discount[idx]] -= 1
+
+
+
+    # 범위 옮겨가며 확인
+    D = len(discount)
+    for i in range(D) :
+
+        de = discount[i]
+        # 맨 앞 물건 삭제
+        if de in needs :
+            needs[de] += 1
+        if i+N < D :
+            ad = discount[i+N]
+            if ad in needs :
+                needs[ad] -= 1
+
         
-        if check(want_dict) :
+        if check(needs) :
             ans += 1
-        idx += 1
+            print(i, i+N)
+            print(needs)
+            
+    return ans
+        
+            
+    
+
+        
         
     
-    return ans
+    
+    # 최대 10개 구매
+    
