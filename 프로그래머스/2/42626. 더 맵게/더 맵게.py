@@ -1,23 +1,31 @@
-import heapq as hq
+import heapq
 
-def solution(scoville, K):
-    q = []
-    
-    for score in scoville :
-        hq.heappush(q,score)
-        
+def solution(scovilles, K):
     cnt = 0
+    q = []
+    for scoville in scovilles :
+        heapq.heappush(q,scoville)
     
-    while q[0] < K :
-        if len(q) < 2 :
-            return -1
+    while q :        
+        # 종료 조건 : q의 최소값이 K 이상 
+        if q[0] >= K :
+            return cnt
         
-        f1 = hq.heappop(q)
-        f2 = hq.heappop(q)
+        if len(q) == 1 :
+            if q[0] < K :
+                return -1
         
-        spicy = f1 + (f2*2)
+        # 안되면 섞기
+        x1 = heapq.heappop(q)
+        x2 = heapq.heappop(q)
+        
+        new = x1 + (x2 * 2)
         cnt += 1
         
-        hq.heappush(q,spicy)
+        heapq.heappush(q,new)
         
-    return cnt
+    return -1
+            
+            
+        
+        
