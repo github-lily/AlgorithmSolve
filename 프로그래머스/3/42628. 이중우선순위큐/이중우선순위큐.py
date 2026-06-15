@@ -1,45 +1,49 @@
 import heapq as hq
 
 def solution(operations):
-    mx_q = []
     mn_q = []
-    id_dict = dict()
-    id = 0
+    mx_q = []
+    cnt = {}
+    
+    def clear_mn() :
+        while mn_q and cnt.get(mn_q[0],0) == 0 :
+            hq.heappop(mn_q)
+    
+    def clear_mx() :
+        while mx_q and cnt.get(-(mx_q[0]),0) == 0 :
+            hq.heappop(mx_q)
+    
+    for opration in operations :
+        opr, num = opration.split()
+        num = int(num)
+        
+        if opr == 'I' :
+            hq.heappush(mn_q,num)
+            hq.heappush(mx_q,-num)
+            cnt[num] = cnt.get(num, 0) + 1
+            
+        else :
+            # 최댓값
+            if num == 1 :
+                clear_mx()
+                if mx_q :                
+                    x = -(hq.heappop(mx_q))
+                    cnt[x] -= 1
 
-    for com in operations:
-        c, n = com.split()
-        n = int(n)
-
-        if c == "I":
-            hq.heappush(mn_q, (n, id))
-            hq.heappush(mx_q, (-n, id))  # 최대힙: 부호 반전
-            id_dict[id] = True
-            id += 1
-
-        elif c == "D":
-            if n == -1:  # 최솟값 삭제
-                # 이미 무효화된 top 정리
-                while mn_q and not id_dict.get(mn_q[0][1], False):
-                    hq.heappop(mn_q)
-                if mn_q:
-                    _, cid = hq.heappop(mn_q)
-                    id_dict[cid] = False
-            elif n == 1:  # 최댓값 삭제
-                while mx_q and not id_dict.get(mx_q[0][1], False):
-                    hq.heappop(mx_q)
-                if mx_q:
-                    _, cid = hq.heappop(mx_q)
-                    id_dict[cid] = False
-
-    # 최종 정리
-    while mn_q and not id_dict.get(mn_q[0][1], False):
-        hq.heappop(mn_q)
-    while mx_q and not id_dict.get(mx_q[0][1], False):
-        hq.heappop(mx_q)
-
-    if not mn_q or not mx_q:
-        return [0, 0]
-
-    mn = mn_q[0][0]
-    mx = -mx_q[0][0]  # 부호 되돌리기
-    return [mx, mn]
+            # 최소값
+            else :
+                clear_mn()
+                if mn_q :
+                    x = hq.heappop(mn_q)
+                    cnt[x] -= 1
+    
+    
+    clear_mx()
+    clear_mn()
+    
+    if mn_q :
+        return [-mx_q[0], mn_q[0]]
+    
+    else :
+        return [0,0]
+            
