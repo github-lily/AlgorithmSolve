@@ -3,10 +3,13 @@ def solution(park, routes):
     M = len(park[0])
     
     # 시작점 찾기
-    for i in range(N) :
-        for j in range(M) :
-            if park[i][j] == 'S' :
-                si, sj = i, j
+    def find_start() :
+        for i in range(N) :
+            for j in range(M) :
+                if park[i][j] == 'S' :
+                    return i, j
+                
+    si,sj = find_start()
     
     # 산책 시작
     directs = ["E","S","W","N"]
