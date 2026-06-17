@@ -19,7 +19,7 @@ def solution(n, wires):
             
             for nxt in graph[cur] :
                 # 끊어진 선 넘기기
-                if (cur == x1 and nxt == x2) or (cur == x2 and nxt == x1) :
+                if (cur == cut1 and nxt == cut2) or (cur == cut2 and nxt == cut1) :
                     continue
                 elif v[nxt] == 0 :
                     q.append(nxt)
