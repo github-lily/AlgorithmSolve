@@ -1,42 +1,44 @@
 from collections import deque
 
-def solution(rect, ux, uy, ix, iy):
-    # ㄷ,ㅁ 경우 고려 2배처리
-    arr = [[-1]*102 for _ in range(102)]
-    v = [[-1]*102 for _ in range(102)]
+def solution(rectangle, characterX, characterY, itemX, itemY):
+    # ㄹ, ㅁ 고려하여 x2 하기
+    X,Y = 102,102
+    arr = [[0]*X for _ in range(Y)]
     
-    di, dj = [0,1,0,-1], [1,0,-1,0]
+    # 지도에 사각형 그리기(테두리 1, 속은 0)
+    for rec in rectangle :
+        x1, y1, x2, y2 = [x*2 for x in rec]
+        
+        for x in range(x1, x2+1) :
+            for y in range(y1,y2+1) :
+                if x in (x1,x2) or y in (y1,y2) :
+                    if arr[x][y] != 2 :
+                        arr[x][y] = 1   # 테두리는 1
+                else :
+                    arr[x][y] = 2   # 속은 2
     
-    for r in rect :
-        sx,sy,ex,ey = map(lambda x : x*2, r)
-        # 내부 빈공간 처리
-        for i in range(sy+1,ey) :
-            for j in range(sx+1,ex) :
-                arr[i][j] = 0
-        # 테두리 표시
-        for i in range(sy,ey+1) :
-            for j in range(sx,ex+1) :
-                if arr[i][j] != 0 :
-                    arr[i][j] = 1
-                    
     
-    q = deque([(uy*2, ux*2)])
-    v[uy*2][ux*2] = 0
+    # 가장 짧은 거리 구하기
+    dx, dy = [0,1,0,-1], [1,0,-1,0]
+    q = deque([(characterX*2, characterY*2, 0)])
+    v = [[False]*X for _ in range(Y)]
+    v[characterX*2][characterY*2] = True
+    
+    
     
     while q :
-        ci, cj = q.popleft()
-        # 아이템 위치 도착하면 종료
-        if ci == iy*2 and cj == ix*2 :
-            ans = v[ci][cj] // 2
-            return ans
+        cx,cy,cnt = q.popleft()
         
+        if cx == itemX*2 and cy == itemY*2 :
+            return cnt // 2
         
         for k in range(4) :
-            ni,nj = ci+di[k], cj+dj[k]
-            if 0 <= ni < 102 and 0 <= nj < 102 :
-                if arr[ni][nj] == 1 and v[ni][nj] == -1 :
-                    v[ni][nj] = v[ci][cj] + 1       # 지나온 칸 표시
-                    q.append((ni,nj))
+            nx,ny = cx + dx[k], cy+dy[k]
+            if 0 <= nx < X and 0<= ny < Y and arr[nx][ny] == 1 and not v[nx][ny] :
+                v[nx][ny] = True
+                q.append((nx,ny,cnt+1))
     
-
+    return cnt
         
+        
+    
