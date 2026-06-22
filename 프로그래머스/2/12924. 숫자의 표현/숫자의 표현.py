@@ -1,29 +1,25 @@
 def solution(n):
     ans = 0
-    
-    # 누적합 리스트 만들기
-    prefix = [0] * (n+1)
-    for i in range(1,n+1) :
-        prefix[i] = prefix[i-1] + i
-    
+
     # 투포인터로 탐색
-    head = 1
-    tail = 0
+    left = 0
+    right = 0
+    summ = 0
     
-    while head <= n and head != tail:
-        sm = prefix[head] - prefix[tail]
-        if sm == n :
-            head += 1
+    while right <= n :
+        if summ == n :
             ans += 1
-        elif sm > n :
-            tail += 1
-            if tail >= head :
-                head += 1
-        else :  # sm < n
-            head += 1
+            right += 1
+            summ += right
+
+        elif summ < n :
+            right += 1
+            summ += right
         
+        else : #summ > n
+            left += 1
+            summ -= left
     
-            
     return ans
-    
+
     
