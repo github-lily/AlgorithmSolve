@@ -1,10 +1,7 @@
 def solution(origin):
-    mn = int(1e9)
     n = len(origin)
-    
-    if n == 1 :
-        return 1
-    
+    mn = n
+
     temp = ""
     for k in range(1,n//2+1) :
         # k개씩 단어 자르기
