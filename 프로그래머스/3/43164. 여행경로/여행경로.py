@@ -1,42 +1,40 @@
 def solution(tickets):
-    tickets.sort()
-    N = len(tickets)
-    visit = [False] * N
-    route = ['ICN']
+    n = len(tickets)
+    tickets.sort()      # 알파벳 순서대로
+        
+    used = [False] * n
+    ans = ['ICN']
     
-    # 출발지 기준으로 도착지 저장
-    graph = {}
-
-    for start, end in tickets :
-        if not start in graph :
-            graph[start] = []
-        graph[start].append(end)
-
+    
     def dfs(cur) :
-        # 종료 조건(모든 티켓 사용)
-        if len(route) == N+1 :
+        nonlocal ans
+        # 티켓 모두 사용시 종료
+        if len(ans) == n+1 :
             return True
         
-        for i in range(N) :
-            start, end = tickets[i]
+        for i in range(n) :
+            start,end = tickets[i]
             
-            # 출발점이 같고 아직 방문 전이라면
-            if start == cur and not visit[i] :
-                visit[i] = True         # 티켓사용
-                route.append(end)       # 방문
+            if cur == start and not used[i] :
+                used[i] = True
+                ans.append(end)
                 
                 if dfs(end) :
-                    return True    # 종료
+                    return True
                 
-                # end를 넣었는데, False가 나오면 빠꾸(끝까지 갔는데 종료조건 미충족 경우)
-                route.pop()
-                visit[i] = False
+                # 티켓 다 못쓰면 초기화
+                ans.pop()
+                used[i] = False
+                
                 
         return False
-                
-              
+    
     dfs('ICN')
     
-    return route
-                
-  
+    return ans
+        
+    
+    
+
+    
+        
