@@ -9,28 +9,39 @@ def solution(places):
     def check(arr) :
         for i in range(n) :
             for j in range(m) :
-                if arr[i][j] == 'P' :
-                    # 사람을 찾으면 상하좌우 확인
-                    for d in range(4) :
-                        ni,nj = i + di[d] , j + dj[d]
-                        if 0 <= ni < n and 0 <= nj < m :
-                            # 1. 사람 : 실패
-                            if arr[ni][nj] == 'P' :
-                                return False
+                if arr[i][j] != 'P' :
+                    continue
+                
+                # 사람을 찾으면 상하좌우 확인
+                for d in range(4) :
+                    ni,nj = i + di[d] , j + dj[d]
+                    
+                    if not (0 <= ni < n and 0 <= nj < m) :
+                        continue
 
-                            # 2. 칸막이 : 그 방향으로는 확인 필요 없음
-                            if arr[ni][nj] == 'X' :
+                    # 1. 사람 : 실패
+                    if arr[ni][nj] == 'P' :
+                        return False
+
+                    # 2. 칸막이 : 그 방향으로는 확인 필요 없음
+                    if arr[ni][nj] == 'X' :
+                        continue
+
+                    # 3. 테이블 : 테이블의 상하좌우 확인
+                    if arr[ni][nj] == 'O' :
+                        # 테이블 주변에 사람있으면 실패
+                        for od in range(4) :
+                            oni,onj = ni + di[od], nj + dj[od]
+                            
+                            if not (0 <= oni < n and 0<= onj < m) :
                                 continue
-
-                            # 3. 테이블 : 테이블의 상하좌우 확인
-                            if arr[ni][nj] == 'O' :
-                                # 테이블 주변에 사람있으면 실패
-                                for od in range(4) :
-                                    oni,onj = ni + di[od], nj + dj[od]
-                                    if 0 <= oni < n and 0<= onj < m :
-                                        if oni != i or onj != j:   
-                                            if arr[oni][onj] == 'P' :
-                                                return False
+                            
+                            # 자기 자신 제외
+                            if oni == i and onj == j:   
+                                continue
+                                
+                            if arr[oni][onj] == 'P' :
+                                return False
 
         return True
                             
