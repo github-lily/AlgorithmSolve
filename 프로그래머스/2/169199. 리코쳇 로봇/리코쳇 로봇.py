@@ -10,43 +10,43 @@ def solution(board):
             for j in range(m) :
                 if board[i][j] == 'R' :
                     return i,j
-                
-    si,sj = find_start()
-    di,dj = [0,1,0,-1],[1,0,-1,0]       # 우하좌상
+    sr,sc = find_start()
     
-    # 최소 이동 찾기
-    v = [[False]*m for _ in range(n)]
-    q = deque([(si,sj,0)])
-    v[si][sj] = True
+    # 최소 이동 거리 구하기
+    def bfs(si,sj) :
+        di, dj = [0,1,0,-1],[1,0,-1,0]
+
+        q = deque([(si,sj,0)])
+        v = [[False] * m for _ in range(n)]
+        v[si][sj] = True
+
+        while q :
+            ci,cj,cnt = q.popleft()
+
+            if board[ci][cj] == 'G' :
+                return cnt
+
+            for d in range(4) :
+                k = 1
+                while True :    # 끝까지 이동
+                    ni, nj = ci + di[d] * k, cj + dj[d] * k
+
+                    # 벽 만나거나 범위 벗어나면 이전 좌표 저장
+                    if not (0 <= ni < n and 0<= nj < m) or board[ni][nj] == 'D' :
+                        ni,nj = ci + di[d] * (k-1), cj + dj[d] * (k-1)
+                        if not v[ni][nj] :  # 자기자신으로 돌아오는 것 방지
+                            v[ni][nj] = True
+                            q.append((ni,nj,cnt+1))
+                        break
+
+                    k += 1
+        
+        return -1
     
-    while q :
-        ci,cj,cnt = q.popleft()
-        
-        if board[ci][cj] == 'G' :
-            return cnt
-        
-        for k in range(4) :
-            ti,tj = ci,cj
-            
-            # 한 방향으로 끝까지 이동
-            while True :
-                ni,nj = ti + di[k], tj + dj[k]
-                
-                if not (0<=ni<n) or not (0<= nj < m) or board[ni][nj] == 'D' :   
-                    break       # 범위 밖 or 벽이면 멈춤
-                
-                # 갈 수 있으면 전진
-                ti,tj = ni,nj
-            
-            # 끝까지 이동 후 위치 확인
-            if not v[ti][tj] :
-                q.append((ti,tj, cnt+1))
-                v[ti][tj] = True
-                    
+    ans = bfs(sr,sc)
     
-    return -1
-                    
-        
-        
-        
+    return ans
                 
+                
+                
+    
