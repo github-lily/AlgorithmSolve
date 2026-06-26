@@ -1,12 +1,14 @@
 def solution(elements):
     total = set()
     n = len(elements)
-    double = elements + elements
-
     
-    for k in range(1,n+1) : # 연속 부분 수열의 길이
-        for i in range(n+k) :
-            total.add(sum(double[i:i+k]))
+    for i in range(n) : # 기준점
+        ssum = elements[i]
+        total.add(ssum)
+        for j in range(i+1,i+n) :   # 2개, 3개... n개까지 더하기
+            ssum += elements[j%n]
+            total.add(ssum)
     
     return len(total)
+        
         
