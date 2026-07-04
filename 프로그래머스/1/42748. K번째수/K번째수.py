@@ -3,6 +3,5 @@ def solution(arr, commands):
     for i,j,k in commands :
         temp = sorted(arr[i-1:j])
         ans.append(temp[k-1])
-    
     return ans
         
