@@ -1,13 +1,19 @@
 def solution(participant, completion):
-    players = {}
+    parti = dict()
     
-    for part in participant :
-        players[part] = players.get(part,0) + 1
+    for p in participant :
+        if p not in parti :
+            parti[p] = 1
+        else :
+            parti[p] += 1
     
-    for com in completion :
-        players[com] -= 1
+    for c in completion :
+        parti[c] -= 1
     
-    for name, cnt in players.items() :
-        if cnt > 0 :
-            return name
-        
+    for p in parti :
+        if parti[p] :
+            return p
+
+    
+    
+    
