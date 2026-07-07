@@ -1,11 +1,6 @@
 def solution(n):
-    # 종료 개수 구하기
-    ends = [0] * (n+1)
-    ends[1] = 1
-    for x in range(2,n+1) :
-        ends[x] = ends[x-1] + x
-    
-    end = ends[n]
+    # 종료 개수 구하기 (등차수열의 합)
+    end = n * (n+1) // 2
     
     
     # 기본값 설정
