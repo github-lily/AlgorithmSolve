@@ -1,14 +1,13 @@
 def solution(numbers):
-    nums = list(map(str,numbers))
+    # 문자열로 바꿔서 순서 배치, 0 고려하기
+    nums = [x*3 for x in map(str,numbers)]
+    nums.sort(reverse = True)
     
-    # 파이썬 문자열 비교의 특징! 한글자씩 비교하기 때문에 333 > 303030
-    nums.sort(key = lambda x : x*3, reverse = True)
+    ans = ""
+    for num in nums :
+        l = len(num) // 3
+        ans += num[:l]
     
-    # [0,0,0] 이면 000이 나오니까 0이 나오도록 str -> int or 확인
-    ans = ''.join(nums)
-    
-    if ans[0] == '0' :
-        ans = '0'
+    if ans[0] == "0" :
+        ans = "0"
     return ans
-    
-    
