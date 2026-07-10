@@ -1,22 +1,25 @@
-def solution(k, dun):
-    n = len(dun)
+def solution(k, duns):
+    n = len(duns)
     v = [False] * n
     mx = 0
     
-    def dfs(energy,cnt) :
+    def dfs(health, cnt) :
         nonlocal mx
         
-        if mx < cnt :
-            mx = cnt
+        mx = max(cnt,mx)
+        
+        if health <= 0 :
+            return
         
         for i in range(n) :
-            if v[i] :
-                continue
-            need, cost = dun[i][0], dun[i][1]
-            if energy >= need :
+            if v[i] == 0 and duns[i][0] <= health :
                 v[i] = True
-                dfs(energy - cost, cnt + 1)
+                dfs(health - duns[i][1], cnt + 1)
                 v[i] = False
+        
     
     dfs(k,0)
+    
     return mx
+
+        
