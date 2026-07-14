@@ -16,7 +16,10 @@ def solution(B, W, trucks):
         # 종료
         if k == n and not q :
             break
-        
+            
+        # 시간 증가
+        t += 1
+
         # 다리 건너기 완료
         if q :
             # 현재시간 - 입장시간 >= B  : 트럭 내리기
@@ -32,8 +35,5 @@ def solution(B, W, trucks):
                 q.append((t, tw))
                 nw += tw
                 k += 1
-
-        # 시간 증가
-        t += 1
     
     return t
