@@ -1,12 +1,13 @@
 def solution(citations):
-    n = len(citations)
-    cits = citations.sort(reverse=True)
     h = 0
+    cnt = 0
+    citations.sort(reverse = True)
     
-    for i in range(n) :
-        if i+1 <= citations[i] :
-            h = i+1
+    for c in citations :
+        cnt += 1
+        if c >= cnt :
+            continue
         else :
-            break
+            return cnt-1
         
-    return h
+    return cnt
