@@ -1,31 +1,24 @@
-def solution(lst, limit):
+# 구명보트 한 번에 최대 2명 탑승 가능
+def solution(people, limit):
+    people.sort()
     
-    lst.sort(reverse = True)
+    left = 0                # 가벼운 사람
+    right = len(people)-1     # 무거운 사람
+    boat = 0
     
-    N = len(lst)
-    ans = 0
+    while left <= right :
+        light = people[left]
+        heavy = people[right]
+        
+        if light + heavy <= limit :
+            left += 1
+
+        right -= 1
+        boat += 1
     
-    # 한 보트당 최대 2명 태울 수 있으니 투포인터 + 그리디 접근
-    i = 0
-    j = N-1
+    return boat
     
-    
-    while i <= j :
-            
-        if lst[i] == limit :
-            ans += 1
-            i += 1
-        else :
-            if i != j and  lst[i] + lst[j] <= limit :
-                j -= 1
-            i += 1
-            ans += 1
-            
         
         
-    return ans
-            
-            
-            
     
-            
+    
