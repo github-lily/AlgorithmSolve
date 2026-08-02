@@ -1,18 +1,17 @@
 def solution(numbers, target):
-    cnt = 0
-    n = len(numbers)
+    lenn = len(numbers)
+    ans = 0
     
-    def dfs(num, i) :
-        nonlocal cnt, target
-        # 종료 조건
-        if i == n :
-            if num == target :
-                cnt += 1
+    def dfs(i, summ) :
+        nonlocal ans
+        if i == lenn :
+            if summ == target :
+                ans += 1
             return
         
-        dfs(num+numbers[i], i+1)
-        dfs(num-numbers[i], i+1)
+        dfs(i+1, summ + numbers[i])
+        dfs(i+1, summ - numbers[i])
     
-    dfs(0, 0)
+    dfs(0,0)
     
-    return cnt
+    return ans
