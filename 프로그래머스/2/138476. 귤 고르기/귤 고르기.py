@@ -1,7 +1,4 @@
-# LFU
-# 서로 다른 종류의 수가 최소
 def solution(k, gyuls):
-    gyuls.sort()
     
     # 귤 개수 저장
     cnt_dict = {}
@@ -21,6 +18,8 @@ def solution(k, gyuls):
         ans += 1
         if k <= 0 :
             return ans
+    
+    return ans
         
     
     
