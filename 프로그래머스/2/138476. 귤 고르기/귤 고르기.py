@@ -1,26 +1,26 @@
-from collections import defaultdict
-
-def solution(k, fruits):
-    f_cnt = defaultdict(int)
+# LFU
+# 서로 다른 종류의 수가 최소
+def solution(k, gyuls):
+    gyuls.sort()
     
-    # 과일 개수 카운트
-    for fruit in fruits :
-        f_cnt[fruit] += 1
+    # 귤 개수 저장
+    cnt_dict = {}
     
-    # 과일 많은 개수별로 정렬(과일 종류는 필요 없으므로 values만 사용)
-    only_cnt = list(f_cnt.values())
-    only_cnt.sort(reverse=True)
-
-    # 과일 개수 많은 것부터 더해가면서 k와 비교
-    total = 0
+    for g in gyuls :
+        if g not in cnt_dict :
+            cnt_dict[g] = 0
+        cnt_dict[g] += 1
+    
+    # 귤 고르기
+    vals = list(cnt_dict.values())      # 개수만 필요
+    vals.sort(reverse = True)
     ans = 0
-    for cnt in only_cnt :
-        if total + cnt < k :
-            total += cnt
-            ans += 1
-        elif total+cnt >= k :
-            ans += 1
+    
+    for v in vals :
+        k -= v
+        ans += 1
+        if k <= 0 :
             return ans
-
         
+    
     
