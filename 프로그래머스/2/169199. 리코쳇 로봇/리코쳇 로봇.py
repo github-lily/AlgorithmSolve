@@ -3,50 +3,51 @@ from collections import deque
 def solution(board):
     n = len(board)
     m = len(board[0])
-    
+
     # 시작점 찾기
-    def find_start() :
-        for i in range(n) :
-            for j in range(m) :
-                if board[i][j] == 'R' :
-                    return i,j
-    sr,sc = find_start()
-    
-    # 최소 이동 거리 구하기
-    def bfs(si,sj) :
-        di, dj = [0,1,0,-1],[1,0,-1,0]
+    def find_start(n, m):
+        for i in range(n):
+            for j in range(m):
+                if board[i][j] == 'R':
+                    return i, j
 
-        q = deque([(si,sj,0)])
-        v = [[False] * m for _ in range(n)]
-        v[si][sj] = True
+    si, sj = find_start(n, m)
 
-        while q :
-            ci,cj,cnt = q.popleft()
+    di,dj = [1, 0, -1, 0], [0, 1, 0, -1]
 
-            if board[ci][cj] == 'G' :
+    def find_goal(si, sj):
+        q = deque([(si, sj, 0)])
+        v = [[0] * m for _ in range(n)]
+        v[si][sj] = 1
+
+        while q:
+            ci, cj, cnt = q.popleft()
+
+            if board[ci][cj] == 'G':
                 return cnt
 
-            for d in range(4) :
-                k = 1
-                while True :    # 끝까지 이동
-                    ni, nj = ci + di[d] * k, cj + dj[d] * k
+            for d in range(4):
+                ni, nj = ci, cj
 
-                    # 벽 만나거나 범위 벗어나면 이전 좌표 저장
-                    if not (0 <= ni < n and 0<= nj < m) or board[ni][nj] == 'D' :
-                        ni,nj = ci + di[d] * (k-1), cj + dj[d] * (k-1)
-                        if not v[ni][nj] :  # 자기자신으로 돌아오는 것 방지
-                            v[ni][nj] = True
-                            q.append((ni,nj,cnt+1))
+                # 벽이나 범위 밖 직전까지 이동
+                while True:
+                    next_i = ni + di[d]
+                    next_j = nj + dj[d]
+
+                    if (
+                        next_i < 0 or next_i >= n
+                        or next_j < 0 or next_j >= m
+                        or board[next_i][next_j] == 'D'
+                    ):
                         break
 
-                    k += 1
-        
+                    ni, nj = next_i, next_j
+
+                # 멈춘 위치에 대해서만 방문 체크
+                if v[ni][nj] == 0:
+                    v[ni][nj] = 1
+                    q.append((ni, nj, cnt + 1))
+
         return -1
-    
-    ans = bfs(sr,sc)
-    
-    return ans
-                
-                
-                
-    
+
+    return find_goal(si, sj)
