@@ -27,21 +27,15 @@ def solution(board):
                 return cnt
 
             for d in range(4):
-                ni, nj = ci, cj
-
-                # 벽이나 범위 밖 직전까지 이동
+                ni,nj = ci,cj
+                
                 while True:
-                    next_i = ni + di[d]
-                    next_j = nj + dj[d]
+                    ti,tj = ni + di[d], nj + dj[d]
 
-                    if (
-                        next_i < 0 or next_i >= n
-                        or next_j < 0 or next_j >= m
-                        or board[next_i][next_j] == 'D'
-                    ):
+                    if (ti < 0 or ti >= n or tj < 0 or tj >= m or board[ti][tj] == 'D') :
                         break
 
-                    ni, nj = next_i, next_j
+                    ni, nj = ti,tj
 
                 # 멈춘 위치에 대해서만 방문 체크
                 if v[ni][nj] == 0:
