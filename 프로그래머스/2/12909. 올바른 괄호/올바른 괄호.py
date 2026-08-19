@@ -1,15 +1,19 @@
-def solution(string):
+def solution(s):
     stack = []
-    for s in string :
-        if s == '(' :
-            stack.append(s)
-        else :
+    lenn = len(s)
+    
+    for c in s :
+        if c == ')' :
             if not stack :
                 return False
-            x = stack.pop()
-            if x == ')' :
+            p = stack.pop()
+            if p == c :
                 return False
-            
+        else :
+            stack.append(c)
+    
     if stack :
         return False
+    
     return True
+            
