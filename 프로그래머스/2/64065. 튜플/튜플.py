@@ -1,17 +1,15 @@
 def solution(s):
-    s = s[2:-2]
-    sets = s.split("},{")
-    sets.sort(key=len)
+    a = s[2:-2].split("},{")
 
+    a.sort(key=lambda x: len(x.split(",")))
+
+    ans = []
     seen = set()
-    answer = []
 
-    for group in sets:
-        for num in group.split(","):
-            n = int(num)
+    for x in a:
+        for n in map(int, x.split(",")):
             if n not in seen:
                 seen.add(n)
-                answer.append(n)
-                break
+                ans.append(n)
 
-    return answer
+    return ans
