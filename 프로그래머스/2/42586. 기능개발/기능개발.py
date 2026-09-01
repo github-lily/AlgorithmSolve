@@ -10,20 +10,14 @@ def solution(progresses, speeds):
     
     while idx < n :
         need_days = math.ceil((100 - progresses[idx])/speeds[idx])
-        # 개발 완료
-        if today >= need_days :
-            cnt += 1
-            idx += 1
-        
-        # 개발 미완료(날짜 부족)
-        else :
+        # 개발 미완료
+        if today < need_days :
             if cnt > 0 :
                 ans.append(cnt)
                 cnt = 0
-            
             today = need_days
-            idx += 1
-            cnt += 1
+        idx += 1
+        cnt += 1
     
     if cnt > 0 :
         ans.append(cnt)
