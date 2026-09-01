@@ -1,26 +1,36 @@
+import math
+
 def solution(progresses, speeds):
+    
     ans = []
     n = len(progresses)
-    needs = []
-    
-    # 필요 일수 구하기
-    for progress, speed in zip(progresses, speeds) :
-        remain = 100 - progress
-        need = (remain + speed - 1) // speed        # 올림 나눗셈
-        needs.append(need)
-        
-    days = needs[0]
+    idx = 0
+    today = 0
     cnt = 0
     
-    # 묶기
-    for need in needs :
-        if days >= need :
+    while idx < n :
+        need_days = math.ceil((100 - progresses[idx])/speeds[idx])
+        # 개발 완료
+        if today >= need_days :
             cnt += 1
+            idx += 1
+        
+        # 개발 미완료(날짜 부족)
         else :
-            ans.append(cnt)
-            days = need
-            cnt = 1
+            if cnt > 0 :
+                ans.append(cnt)
+                cnt = 0
             
-    ans.append(cnt)     # 맨 뒤에거 넣어주기
+            today = need_days
+            idx += 1
+            cnt += 1
     
+    if cnt > 0 :
+        ans.append(cnt)
+        
     return ans
+        
+            
+        
+    
+    
