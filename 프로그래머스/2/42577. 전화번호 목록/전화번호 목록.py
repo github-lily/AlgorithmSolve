@@ -1,15 +1,9 @@
-def solution(phone_book):
-    phone_set = set(phone_book)
-    n = len(phone_book)
+def solution(phone_book): 
+    phone_book.sort() 
+    n = len(phone_book) 
 
-    for phone in phone_set :
-        temp = ""
-        for num in phone :
-            temp += num
-            if phone != temp and temp in phone_set :
-                return False
-    
+    for i in range(n-1) :
+        if phone_book[i+1].startswith(phone_book[i]) :
+            return False
+        
     return True
-        
-        
-            
