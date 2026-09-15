@@ -1,17 +1,17 @@
-def solution(participant, completion):
-    parti = dict()
+def solution(participants, completion):
+    participant = dict()
     
-    for p in participant :
-        if p not in parti :
-            parti[p] = 1
+    for p in participants :
+        if p not in participant :
+            participant[p] = 1
         else :
-            parti[p] += 1
+            participant[p] += 1
     
     for c in completion :
-        parti[c] -= 1
+        participant[c] -= 1
     
-    for p in parti :
-        if parti[p] :
+    for p in participant :
+        if participant[p] :
             return p
 
     
