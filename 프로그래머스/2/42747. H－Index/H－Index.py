@@ -5,6 +5,9 @@ def solution(citations):
     for i in range(len(citations)) :
         if i+1 <= citations[i] :
             h = i+1
+        
+        else :
+            return h
     
     
     return h
