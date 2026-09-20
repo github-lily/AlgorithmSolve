@@ -1,14 +1,10 @@
 def solution(citations):
-    cnt = 0
     citations.sort(reverse = True)
+    h = 0
     
-    for c in citations :
-        cnt += 1
-        if c >= cnt :
-            continue
-        
-        # 현재 개수보다 인용 횟수가 적으면 중단
-        else :
-            return cnt-1
-        
-    return cnt
+    for i in range(len(citations)) :
+        if i+1 <= citations[i] :
+            h = i+1
+    
+    
+    return h
