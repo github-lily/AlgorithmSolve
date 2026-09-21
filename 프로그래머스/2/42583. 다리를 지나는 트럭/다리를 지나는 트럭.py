@@ -1,39 +1,42 @@
 from collections import deque
 
-'''
-1. 0초엔 못올라감
-2. 올라간 시간도 1초로 포함됨
-3. 다리 길이만큼 시간이 걸림
-'''
-def solution(B, W, trucks):
-    t = 0
-    q = deque()
-    nw = 0       # 현재 무게
-    k = 0
-    n = len(trucks)
+def solution(bridge_length, limit, truck_weights):
+    N = len(truck_weights)
+    q = deque([(truck_weights[0],1)])
+    cnt = 1
+    weight = truck_weights[0]
+    now = 2
+    i = 1
     
-    while True :    
-        # 종료
-        if k == n and not q :
+    while True :
+        if i == N and not q :
             break
+        
+        # 하차
+        # 현재시간 - 시작시간
+        if (now - q[0][1]) == bridge_length :
+            w,s = q.popleft()
+            cnt -= 1
+            weight -= w
             
-        # 시간 증가
-        t += 1
-
-        # 다리 건너기 완료
-        if q :
-            # 현재시간 - 입장시간 >= B  : 트럭 내리기
-            if t - q[0][0] >= B :
-                nw -= q[0][1]
-                q.popleft()
-
-        # 다리 건너기 시작
-        if k < n :
-            tw = trucks[k]
-            if nw + tw <= W :
-                # 입장시간 추가. 현재시간 - 입장시간 >= B 빼기
-                q.append((t, tw))
-                nw += tw
-                k += 1
+        # 승차
+        # 마지막 트럭 고려
+        if i < N and bridge_length > cnt and (weight + truck_weights[i]) <= limit :
+            w = truck_weights[i]
+            q.append((w,now))
+            cnt += 1
+            weight += w
+            i += 1
+        
+        now += 1
+        
+    return now -1
+        
+        
+        
     
-    return t
+                
+                
+            
+            
+    
