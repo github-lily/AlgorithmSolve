@@ -14,6 +14,7 @@ def solution(target):
         
         for a in alphabet :
             cnt += 1
+            # 타겟 찾으면 더 진행 X
             if dfs(word + a) :
                 return True
 
