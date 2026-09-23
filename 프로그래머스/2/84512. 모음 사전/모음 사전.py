@@ -2,26 +2,22 @@
 def solution(target):
     alphabet = "AEIOU"
     cnt = 0
-    isTarget = False
     
     def dfs(word) :
-        nonlocal cnt, isTarget
-        if isTarget :
-            return
-            
-    
+        nonlocal cnt
+        
         if word == target :
-            isTarget = True
-            return 
+            return True
         
         if len(word) == 5 :
-            return
+            return False
         
-        for i in range(5) :
+        for a in alphabet :
             cnt += 1
-            dfs(word + alphabet[i])
-            if isTarget :
-                return
+            if dfs(word + a) :
+                return True
+
+        return False
             
     dfs("")
     
