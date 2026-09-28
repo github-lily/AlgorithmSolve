@@ -1,49 +1,58 @@
 import heapq as hq
 
 def solution(operations):
-    mn_q = []
     mx_q = []
-    cnt = {}
+    mn_q = []
+    N = len(operations)
+    id_val = 0
+    is_id = [0] * N
     
-    def clear_mn() :
-        while mn_q and cnt.get(mn_q[0],0) == 0 :
-            hq.heappop(mn_q)
-    
-    def clear_mx() :
-        while mx_q and cnt.get(-(mx_q[0]),0) == 0 :
-            hq.heappop(mx_q)
-    
-    for opration in operations :
-        opr, num = opration.split()
+    for operation in operations :
+        oper, num = operation.split()
         num = int(num)
-        
-        if opr == 'I' :
-            hq.heappush(mn_q,num)
-            hq.heappush(mx_q,-num)
-            cnt[num] = cnt.get(num, 0) + 1
+        if oper == 'I' :
+            hq.heappush(mn_q,(num, id_val))
+            hq.heappush(mx_q,(-num, id_val))
+            is_id[id_val] = 1
+            id_val += 1
             
         else :
-            # 최댓값
             if num == 1 :
-                clear_mx()
-                if mx_q :                
-                    x = -(hq.heappop(mx_q))
-                    cnt[x] -= 1
-
-            # 최소값
+                # q 동기화
+                while mx_q and not is_id[mx_q[0][1]]:
+                    hq.heappop(mx_q)
+                
+                if mx_q :
+                    num, idv = hq.heappop(mx_q)
+                    if is_id[idv] :
+                        is_id[idv] -= 1
+        
             else :
-                clear_mn()
+                # q 동기화
+                while mn_q and not is_id[mn_q[0][1]] :
+                    hq.heappop(mn_q)
+                    
                 if mn_q :
-                    x = hq.heappop(mn_q)
-                    cnt[x] -= 1
-    
-    
-    clear_mx()
-    clear_mn()
-    
-    if mn_q :
-        return [-mx_q[0], mn_q[0]]
-    
-    else :
-        return [0,0]
+                    num, idv = hq.heappop(mn_q)
+                    if is_id[idv] :
+                        is_id[idv] -= 1
+        
+                    
             
+                
+    if sum(is_id) == 0 :
+        return [0,0]
+    
+    while mx_q :
+        num,idv = hq.heappop(mx_q)
+        if is_id[idv] :
+            mx = -num
+            break
+        
+    while mn_q :
+        num, idv = hq.heappop(mn_q)
+        if is_id[idv] :
+            mn = num
+            break
+    
+    return [mx,mn]
