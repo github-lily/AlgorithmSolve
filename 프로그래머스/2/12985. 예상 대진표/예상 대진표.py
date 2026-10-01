@@ -1,10 +1,26 @@
-def solution(n, a, b):
-    answer = 0
-
-    while a != b:
-        # 현재 참가자가 다음 라운드에서 몇 번이 되는지 계산
-        a = (a + 1) // 2
-        b = (b + 1) // 2
-        answer += 1
-
-    return answer
+def solution(n,a,b):
+    if a > b :
+        a,b = b,a
+        
+    left = 0
+    right = n
+    cnt = n.bit_length() - 1
+    
+    while left < right :
+        mid = (left + right) // 2
+        
+        # 중앙 기준으로 양끝에 있으면 구간의 끝(결승)에서 만남
+        if a <= mid < b :
+            return cnt
+        
+        # a,b 둘 다 왼쪽
+        if b <= mid :
+            right = mid
+        
+        else :
+            left = mid + 1
+        
+        cnt -= 1
+        
+    
+    
