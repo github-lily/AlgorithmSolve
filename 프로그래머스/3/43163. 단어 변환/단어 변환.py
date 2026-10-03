@@ -1,7 +1,7 @@
 def solution(begin, target, words):
     N = len(words)
     word_len = len(begin)
-    visit = [0] * N
+    v = [0] * N
     mn = int(1e9)
     
     def canChange(now, nxt) :
@@ -13,9 +13,9 @@ def solution(begin, target, words):
             if diff > 1 :
                 return False
         
-        return True
+        return diff == 1
     
-    def dfs(cur, cnt, v) :
+    def dfs(cur, cnt) :
         nonlocal mn
         res = 0
         
@@ -27,18 +27,14 @@ def solution(begin, target, words):
 
                 
                 v[idx] = 1
-                res = dfs(words[idx], cnt + 1, v)
+                dfs(words[idx], cnt + 1)
                 v[idx] = 0
 
         return mn
     
-    ans = dfs(begin, 0, visit)
+    ans = dfs(begin, 0)
     
-    if mn == int(1e9) :
-        return 0
-    
-    
-    return ans      
+    return 0 if mn == int(1e9) else mn    
         
     
     
