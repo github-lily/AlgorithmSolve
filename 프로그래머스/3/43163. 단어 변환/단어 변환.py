@@ -1,39 +1,45 @@
-from collections import deque
-# 가능한 단어를 q에 넣고 방문 표시 하며 비교
-
-def check(now, nxt) :
-    diff = 0
-    for i in range(len(now)) :
-        if diff > 1 :
-            return False
-        if now[i] != nxt[i] :
-            diff += 1
-    if diff == 1 :
-        return True     # 하나만 다르면 통과
-    else :
-        return False    # 같은 단어는 거르기
-
 def solution(begin, target, words):
+    N = len(words)
+    word_len = len(begin)
+    visit = [0] * N
+    mn = int(1e9)
     
-    if target not in words :
+    def canChange(now, nxt) :
+        diff = 0
+        for i in range(word_len) :
+            if now[i] != nxt[i] :
+                diff += 1
+                
+            if diff > 1 :
+                return False
+        
+        return True
+    
+    def dfs(cur, cnt, v) :
+        nonlocal mn
+        res = 0
+        
+        for idx in range(N) :
+            if v[idx] == 0 and canChange(cur, words[idx]) :
+                if words[idx] == target :
+                    mn = min(cnt+1, mn)
+                    continue
+
+                
+                v[idx] = 1
+                res = dfs(words[idx], cnt + 1, v)
+                v[idx] = 0
+
+        return mn
+    
+    ans = dfs(begin, 0, visit)
+    
+    if mn == int(1e9) :
         return 0
     
-    v = set()
-    q = deque([(begin,0)])
-            
     
-    while q :
-        cur, count = q.popleft()
-        if cur == target :
-            return count
+    return ans      
         
-        for word in words :
-            if word not in v and check(cur,word) :
-                q.append((word,count+1))
-                v.add(word)
-
     
-    return 0
-            
     
     
