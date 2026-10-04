@@ -33,11 +33,12 @@ def solution(tickets):
                 
             
                 dfs(nxt[0])
-
                 
-                if not isend : 
-                    nxt[1] = 1
-                    routes.pop()
+                if isend :
+                    return
+                
+                nxt[1] = 1
+                routes.pop()
     
     dfs("ICN")
     
