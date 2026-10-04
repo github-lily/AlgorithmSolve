@@ -1,40 +1,46 @@
+
 def solution(tickets):
-    n = len(tickets)
-    tickets.sort()      # 알파벳 순서대로
-        
-    used = [False] * n
-    ans = ['ICN']
     
+    places = dict()
+    routes = ["ICN"]
+    n = len(tickets)
+    
+    for start,end in tickets :
+        if start not in places :
+            places[start] = []
+        places[start].append([end,1])
+    
+    for key in places :
+        places[key].sort()
+        
+    isend = False
     
     def dfs(cur) :
-        nonlocal ans
-        # 티켓 모두 사용시 종료
-        if len(ans) == n+1 :
-            return True
+        nonlocal isend
         
-        for i in range(n) :
-            start,end = tickets[i]
+        
+        if len(routes) == n + 1 :
+            isend = True
+            return
+        
+        if cur not in places :
+            return 
+        
+        for nxt in places[cur] :
+            if nxt[1] == 1 :
+                nxt[1] = 0
+                routes.append(nxt[0])
+                
             
-            if cur == start and not used[i] :
-                used[i] = True
-                ans.append(end)
-                
-                if dfs(end) :
-                    return True
-                
-                # 티켓 다 못쓰면 초기화
-                ans.pop()
-                used[i] = False
-                
-                
-        return False
-    
-    dfs('ICN')
-    
-    return ans
-        
-    
-    
+                dfs(nxt[0])
 
+                
+                if not isend : 
+                    nxt[1] = 1
+                    routes.pop()
     
+    dfs("ICN")
+    
+    return routes
+                
         
