@@ -13,7 +13,6 @@ def solution(scoville, K):
         heapq.heappush(scoville, first + second * 2)
         answer += 1
 
-    # K 이상으로 만들 수 없는 경우
     if scoville[0] < K:
         return -1
 
