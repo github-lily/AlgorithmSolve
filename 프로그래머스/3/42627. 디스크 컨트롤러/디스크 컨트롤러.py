@@ -1,33 +1,29 @@
 import heapq as hq
 
 def solution(jobs):
-    lenn = len(jobs)
-    waitingQ = []
-    now = 0
+    q = []
     returnTime = 0
-
-    jobs.sort(key=lambda x: x[0])
-
-    # 다음에 큐에 삽입할 작업 인덱스
+    now = 0
     idx = 0
-
-    # 모든 작업이 처리될 때까지 반복
-    while idx < lenn or waitingQ:
-
-        # 현재 시각까지 요청된 작업을 모두 삽입
-        while idx < lenn and jobs[idx][0] <= now:
-            startTime, jobTime = jobs[idx]
-            hq.heappush(waitingQ, (jobTime, startTime, idx))
+    lenn = len(jobs)
+    
+    jobs.sort(key = lambda x : x[0])
+    
+    while idx < lenn or q :
+    # 현재 시간까지 요청된 작업 모두 추가
+        while idx < lenn and jobs[idx][0] <= now :
+            hq.heappush(q, (jobs[idx][1], jobs[idx][0], idx))
             idx += 1
-
-        # 대기 중인 작업이 있다면 실행
-        if waitingQ:
-            j, s, i = hq.heappop(waitingQ)
-            now += j
-            returnTime += (now - s)
-
-        # 대기 중인 작업이 없다면 다음 요청 시각으로 이동
-        else:
+            
+    
+    # 대기중인 작업 처리
+        if q :
+            jt, st, i = hq.heappop(q)
+            now += jt
+            returnTime += (now - st)
+    
+    # 대기 중인 작업 없으면 시간 이동
+        else :
             now = jobs[idx][0]
-
+    
     return returnTime // lenn
