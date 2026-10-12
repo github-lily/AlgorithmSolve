@@ -1,16 +1,14 @@
 def solution(clothes):
+    closet = dict()
     
-    wardrobe = {}
-    
-    for name, typ in clothes :
-        if typ not in wardrobe :
-            wardrobe[typ] = []
-        wardrobe[typ].append(name)
-
-    tmp = 1
-    
-    for w in wardrobe :
-        tmp *= len(wardrobe[w])+1
+    for cloth, typ in clothes :
+        if typ not in closet :
+            closet[typ] = 0
+        closet[typ] += 1
         
-    return tmp - 1      # 아무것도 안입은 경우 제외
+    ans = 1
+    for cnt in closet.values() :
+        ans *= (cnt+1)
+    
+    return ans - 1
     
