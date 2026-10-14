@@ -1,27 +1,28 @@
 import heapq as hq
 
 def solution(genres, plays):
-    cnt_dic = dict()
-    song_dic = dict()
-    
-    # 개수와 노래 저장
-    for idx, (genre, play) in enumerate(zip(genres,plays)) :
-        if genre not in cnt_dic :
-            cnt_dic[genre] = 0
-            song_dic[genre] = []
-        cnt_dic[genre] += play
-        song_dic[genre].append((idx,play))
-    
-    # 속한 노래가 많이 재생된 장르 정렬
-    sorted_genre = sorted(cnt_dic.keys(), key=lambda g : cnt_dic[g], reverse = True)
-    
+    songs = {}
+    songs_cnt = {}
     ans = []
-    for genre in sorted_genre :
-        # 장르 내 재생 횟수, idx별 정렬
-        sorted_song = sorted(song_dic[genre], key = lambda x : (x[1], -x[0]), reverse = True)
+    
+    # 곡 및 장르별 재생횟수 저장
+    for idx, genre in enumerate(genres) :
+        if not genre in songs :
+            songs[genre] = []
+            songs_cnt[genre] = 0
+        hq.heappush(songs[genre], (-plays[idx], idx))
+        songs_cnt[genre] += plays[idx]
+    
+    # 장르별 재생횟수 정렬
+    sorted_cnt = sorted(songs_cnt.items(), key = lambda x : x[1], reverse=True)
+    
+    lenn = len(sorted_cnt)
+    
+    for gen,_ in sorted_cnt :
+        for _ in range(2) :
+            if songs[gen] :
+                val, idx = hq.heappop(songs[gen])
+                ans.append(idx)
         
-        for idx,play in sorted_song[:2] :
-            ans.append(idx)
-            
     return ans
-        
+    
