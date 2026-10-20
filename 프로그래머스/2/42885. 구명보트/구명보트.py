@@ -7,7 +7,7 @@ def solution(people, limit):
     light = N-1
     
     while heavy <= light :
-        if heavy != light and people[heavy] + people[light] <= limit :
+        if people[heavy] + people[light] <= limit :
             light -= 1
         
         heavy += 1
