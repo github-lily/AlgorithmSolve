@@ -1,64 +1,56 @@
 def solution(want, number, discount):
-    # 가지치기 1 : 원하는게 할인 안하면 종료
-    if len(set(want) - set(discount)) > 0 :
-        return 0
-    
+    inn = 0
+    out = 0
     ans = 0
-    N = sum(number)
+    
     D = len(discount)
+    N = len(want)
+    need = N
+    summ = sum(number)
+
     
-    # 가지치기 2 : 할인일이 원하는 구매 개수보다 적으면 종료
-    if N > D :
-        return 0
+    # 필요 물품 저장
+    wants = dict()
     
-    
-    # want 저장
-    needs = {}
-    for i in range(len(number)) :
-        needs[want[i]] = number[i]
-    
-    def check(dic) :
-        vals = dic.values()
-        for val in vals :
-            if val > 0 :
-                return False
-        return True
+    for i in range(N) :
+        wants[want[i]] = number[i]
     
     
-    # 필요한 구매 물품 개수만큼 할인 품목 저장
-    for idx in range(N) :
-        prod = discount[idx]
-        if prod in needs :
-            needs[prod] -= 1
+    # 초반 N개 차감
+    while inn < summ :
+        cur = discount[inn]
+        if cur in wants :
+            wants[cur] -= 1
+            if wants[cur] == 0 :        # 중복 need차감 방지
+                need -= 1
+        inn += 1
     
-    # 확인
-    if check(needs) :
+    if need < 1 :
         ans += 1
+    
 
-    # 범위 옮겨가며 확인
-    for i in range(D-N) :
-
-        # 맨 앞 물건 삭제
-        de = discount[i]
-        if de in needs :
-            needs[de] += 1
+    # 가능한 날 탐색
+    while inn < D :
+        # 물건 제거
+        out_prod = discount[out]
+        if out_prod in wants :
+            wants[out_prod] += 1
+            if wants[out_prod] == 1 :
+                need += 1
         
-        # 뒷 물건 추가
-        ad = discount[i+N]
-        if ad in needs :
-            needs[ad] -= 1
-
-        if check(needs) :
+        
+        # 물건 추가
+        inn_prod = discount[inn]
+        if inn_prod in wants :
+            wants[inn_prod] -= 1
+            if wants[inn_prod] == 0 :
+                need -= 1
+        
+        out += 1
+        inn += 1
+        if need == 0 :
             ans += 1
-            
-    return ans
         
-            
-    
 
-        
-        
     
-    
-    # 최대 10개 구매
-    
+    return ans
