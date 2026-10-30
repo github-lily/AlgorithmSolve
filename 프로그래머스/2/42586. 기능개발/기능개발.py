@@ -1,30 +1,35 @@
 import math
 
 def solution(progresses, speeds):
-    
     ans = []
-    n = len(progresses)
-    idx = 0
-    today = 0
+    days = 0
     cnt = 0
+    N = len(progresses)
+    idx = 0
     
-    while idx < n :
-        need_days = math.ceil((100 - progresses[idx])/speeds[idx])
-        # 개발 미완료
-        if today < need_days :
-            if cnt > 0 :
+    while idx < N :
+        needs = math.ceil((100 - progresses[idx]) / speeds[idx])
+        
+        if days == 0 :
+            days = needs
+            cnt += 1
+        else :
+            # 함께 배포
+            if needs <= days :
+                cnt += 1
+            # 따로 배포
+            else :
                 ans.append(cnt)
-                cnt = 0
-            today = need_days
+                cnt = 1
+                days = needs
+        
         idx += 1
-        cnt += 1
     
-    if cnt > 0 :
+    if cnt :
         ans.append(cnt)
         
     return ans
         
-            
         
     
     
