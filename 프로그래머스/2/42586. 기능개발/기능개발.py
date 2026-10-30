@@ -12,17 +12,14 @@ def solution(progresses, speeds):
         
         if days == 0 :
             days = needs
-            cnt += 1
         else :
-            # 함께 배포
-            if needs <= days :
-                cnt += 1
             # 따로 배포
-            else :
+            if needs > days :
                 ans.append(cnt)
-                cnt = 1
+                cnt = 0
                 days = needs
         
+        cnt += 1
         idx += 1
     
     if cnt :
