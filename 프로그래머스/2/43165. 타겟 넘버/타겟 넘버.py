@@ -1,16 +1,16 @@
 def solution(numbers, target):
-    lenn = len(numbers)
     ans = 0
+    N = len(numbers)
     
-    def dfs(i, summ) :
-        nonlocal ans
-        if i == lenn :
-            if summ == target :
+    def dfs(num, i) :
+        nonlocal ans, target, N
+        if i == N :
+            if num == target :
                 ans += 1
             return
         
-        dfs(i+1, summ + numbers[i])
-        dfs(i+1, summ - numbers[i])
+        dfs(num+numbers[i], i+1)
+        dfs(num-numbers[i], i+1)
     
     dfs(0,0)
     
