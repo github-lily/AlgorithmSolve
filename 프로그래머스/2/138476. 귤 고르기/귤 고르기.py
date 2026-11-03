@@ -1,10 +1,13 @@
 from collections import Counter
-
 def solution(k, tangerine):
-    cnt = sorted(Counter(tangerine).values(), reverse=True)
+    cnt = sorted(Counter(tangerine).values(), reverse = True)
     
-    total = 0
-    for i, n in enumerate(cnt):
-        total += n
-        if total >= k:
-            return i + 1
+    ans = 0
+    summ = 0
+    for x in cnt :
+        summ += x
+        ans += 1
+        if summ >= k :
+            break
+            
+    return ans
