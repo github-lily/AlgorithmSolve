@@ -1,11 +1,10 @@
 def solution(n, words):
     used = set()
-    prev = words[0][0]
 
-    for i, w in enumerate(words):
-        if w in used or w[0] != prev:
+    for i, word in enumerate(words):
+        if word in used or (i > 0 and words[i - 1][-1] != word[0]):
             return [i % n + 1, i // n + 1]
-        used.add(w)
-        prev = w[-1]
+
+        used.add(word)
 
     return [0, 0]
