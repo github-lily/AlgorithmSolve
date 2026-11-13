@@ -1,29 +1,12 @@
 def solution(n):
-    # 0에서 시작하지 않고 n에서 역방향 탐색
-    def dfs(num):
-        if num == 0:
+    
+    def dfs(num) :
+        if num == 0 :
             return 0
-
-        if num % 2 == 0:
-            return dfs(num // 2)
-
-        return dfs(num - 1) + 1
-
-    return dfs(n)    
-    
-    '''
-    1  1
-    2  1 2 (1)
-    3  1 2 3 (2)
-    4  1 2 4(1)
-    5  1 2 4 5 (2)
-    6  1 2 3 6 (2)
-    7  1 2 3 6 7 (3)
-    8  1 2 4 8 (1)
-    9  1 2 4 8 9 (2)
-    10  1 2 4 8 9 10 (3)
-    11  1 2 4 8 9 10 11 (4)
-    12  1 2 3 6 12 (2)
-    
-    5000  1 2 4 8 16 32 64 128 256 512 1024 2048 4096 
-    '''
+        
+        if num % 2 == 0 :
+            return dfs(num//2)
+        
+        return dfs(num-1) + 1 
+        
+    return dfs(n)
